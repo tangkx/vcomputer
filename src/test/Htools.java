@@ -106,7 +106,20 @@ public class Htools {
 				break;
 			case "SHL":
 				
+				code = "6";
+				if(arr.length != 3){
+					System.out.println("length error");
+					return null;
+				}
 				
+				if(checkRegister(arr[1]) && !overSHL(arr[2])){
+					String reg1 = arr[1].substring(arr[1].length()-1);
+					String rnum = arr[2].substring(arr[2].length()-1);
+					res = code+reg1+"0"+rnum;
+					reslut.add(res);
+				}else{
+					System.out.println("SHL error");
+				}
 				break;
 			case "NOT":
 				
@@ -167,6 +180,16 @@ public class Htools {
 
 		int hex = Integer.parseInt(hexnum, 16);
 		if (hex < 0x00 || hex > 0xFF) {
+			res = true;
+		}
+		return res;
+	}
+	
+	public boolean overSHL(String hexnum) {
+		boolean res = false;
+
+		int hex = Integer.parseInt(hexnum, 16);
+		if (hex < 0x0 || hex > 0xF) {
 			res = true;
 		}
 		return res;

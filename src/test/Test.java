@@ -32,7 +32,7 @@ public class Test {
 //		int res = an + bn;
 //		System.out.println(t.convertToHex(res));
 		
-		String []str = {"LOAD R0,23","LOAD R1,34","LOAD R3,[ff]","not r1","halt"};
+		String []str = {"LOAD R0,23","LOAD R1,34","LOAD R3,[ff]","not r1","halt","SHL R1,a"};
 		List<String> list = ht.ASEtoMAC(str);
 		for(int i = 0; i < list.size(); i++){
 			System.out.println(list.get(i));
