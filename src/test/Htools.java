@@ -1,7 +1,10 @@
 package test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,12 +18,21 @@ public class Htools {
 	public List<String> ASEtoMAC(String[] str) {
 
 		List<String> reslut = new ArrayList<String>();
-
+		Map<String, Integer> Tags = new HashMap<>();
+		
 		for (int i = 0; i < str.length; i++) {
 			String res = "";
 			String code = "";
-			String[] arr = str[i].split("\\s+|,");
-
+			String[] arr = {};
+			if(str[i].matches("[^@]+:[^@]+")){
+				String tag = str[i].substring(0, str[i].indexOf(":"));
+				Tags.put(tag, i);
+				System.out.println(tag+Tags.get(tag));
+				str[i] = str[i].substring(str[i].indexOf(":")+1);
+			}
+			
+			arr = str[i].split("\\s+|,");
+			
 			switch (upperStr(arr[0])) {
 
 			case "LOAD":
@@ -136,8 +148,32 @@ public class Htools {
 				break;
 			case "JMP":
 				
+				boolean flag = false;
 				code = "8";
+				if(arr.length != 3){
+					return null;
+				}
 				
+				if(checkRegister(arr[1])){
+					String reg1 = arr[1].substring(arr[1].length()-1);
+					String tag = arr[2];
+					Iterator it = Tags.keySet().iterator();
+					while(it.hasNext()){
+						String key = it.next().toString();
+						if(tag.equals(key)){
+							int value = Tags.get(key);
+							String hexaddr = Integer.toHexString(value*2);
+							res = code+reg1+hexaddr;
+							reslut.add(res);
+							flag = true;
+							break;
+						}
+					}
+					
+					if(!flag){
+						System.out.println("²»´æÔÚ´Ë˜ËÕI");
+					}
+				}
 				break;
 			case "HALT":
 				
